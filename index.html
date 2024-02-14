@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube to MP3 Converter</title>
+</head>
+<body>
+<h1>YouTube to MP3 Converter</h1>
+<input type="text" id="youtubeUrl" placeholder="Enter YouTube URL">
+<button onclick="convertToMP3()">Convert to MP3</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ytdl-core/3.2.2/ytdl-core.js"></script>
+<script>
+function convertToMP3() {
+    var youtubeUrl = document.getElementById("youtubeUrl").value;
+    
+    if (!youtubeUrl) {
+        alert("Please enter a YouTube URL.");
+        return;
+    }
+    
+    // Extract video ID from URL
+    var videoId = youtubeUrl.split('v=')[1];
+    var ampersandPosition = videoId.indexOf('&');
+    if (ampersandPosition != -1) {
+        videoId = videoId.substring(0, ampersandPosition);
+    }
+    
+    // Construct download URL
+    var downloadUrl = 'https://www.youtube.com/watch?v=' + videoId;
+    
+    // Call ytdl-core's download method to get audio stream
+    ytdl(downloadUrl, { filter: 'audioonly' }).pipe(fs.createWriteStream('video.mp3'));
+    
+    alert("Conversion successful! Check for the 'video.mp3' file in your project directory.");
+}
+</script>
+</body>
+</html>
